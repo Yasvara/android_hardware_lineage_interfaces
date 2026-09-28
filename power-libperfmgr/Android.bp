@@ -31,7 +31,6 @@ cc_binary {
         "libcutils",
         "libdl",
         "liblog",
-        "libperfmgr",
         "libprocessgroup",
         "libutils",
         "pixel-power-ext-V1-ndk",
@@ -43,6 +42,11 @@ cc_binary {
         "libgmock",
         "libgtest",
         "powerhal_flags-aconfig-cc",
+        // libperfmgr is not installed to vendor by Soong on this
+        // tree, which makes the service fail to link at boot (and
+        // PowerManagerService then blocks forever waiting for the AIDL
+        // Power HAL). Link it statically instead.
+        "libperfmgr",
     ],
     whole_static_libs: select(soong_config_variable("power_libperfmgr", "mode_extension_lib"), {
         any @ flag_val: [flag_val],
